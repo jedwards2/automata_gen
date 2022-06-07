@@ -1,18 +1,90 @@
 import "./App.css";
-import { useState } from "react";
+import * as Tone from "tone";
+import { useState, useEffect } from "react";
 import MusicBlock from "./components/MusicBlock";
 
 function App() {
+  const [count, setCount] = useState(0);
+  const [running, setRunning] = useState(false);
   const [currentRule, setCurrentRule] = useState(122);
   const [currentIndex, setCurrentIndex] = useState([
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
   ]);
+  const [currentSelected, setCurrentSelected] = useState([
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+
   const [formState, setFormState] = useState(0);
+
+  const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+
+  function playNote(note, time) {
+    synth.triggerAttackRelease(note, "8n", time);
+  }
 
   const music_blocks = currentIndex.map((index, idx) => {
     return (
-      <MusicBlock active={index} key={idx} setBlock={setBlock} idx={idx} />
+      <MusicBlock
+        key={idx}
+        active={index}
+        setBlock={setBlock}
+        idx={idx}
+        playNote={playNote}
+        currentSelected={currentSelected[idx]}
+      />
     );
+  });
+
+  function switchRunning() {
+    if (!running) {
+      Tone.Transport.start();
+    } else {
+      Tone.Transport.stop();
+    }
+
+    setRunning((prevState) => !prevState);
+  }
+
+  useEffect(() => {
+    const loop = new Tone.Loop((time) => {
+      setCount((prevCount) => prevCount + 1);
+
+      setCurrentSelected((prevState) => {
+        let index = count % prevState.length;
+        let nextIndex = (count + 1) % prevState.length;
+        let newState = [...prevState];
+
+        newState[index] = !prevState[index];
+        newState[nextIndex] = !prevState[nextIndex];
+
+        if (index === currentIndex.length - 1) {
+          compute_new_row();
+        }
+
+        return newState;
+      });
+    }, "4n");
+
+    loop.start(0);
+
+    return () => {
+      loop.dispose();
+    };
   });
 
   function setBlock(key) {
@@ -132,6 +204,7 @@ function App() {
 
   return (
     <div className="App">
+      <button onClick={switchRunning}>{running ? "Stop" : "Start"}</button>
       <form onSubmit={handleSubmit}>
         <label htmlFor="numInput">Ruleset - Current: {currentRule}</label>
         <input
@@ -144,7 +217,6 @@ function App() {
         ></input>
         <input type="submit" value="Submit"></input>
       </form>
-      <button onClick={compute_new_row}>Increment</button>
       {music_blocks}
     </div>
   );

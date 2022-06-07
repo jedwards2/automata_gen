@@ -16,3 +16,7 @@
 .off {
   background-color: white;
 }
+
+.selected {
+  border: orange 2px solid
+}
