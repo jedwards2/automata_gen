@@ -204,20 +204,24 @@ function App() {
 
   return (
     <div className="App">
-      <button onClick={switchRunning}>{running ? "Stop" : "Start"}</button>
-      <form onSubmit={handleSubmit}>
+      <button onClick={switchRunning} className="start-stop-button">
+        {running ? "Stop" : "Start"}
+      </button>
+      <form onSubmit={handleSubmit} className="form-div">
         <label htmlFor="numInput">Ruleset - Current: {currentRule}</label>
-        <input
-          name="numInput"
-          type="number"
-          min="0"
-          max="126"
-          value={formState}
-          onChange={(e) => setFormState(e.target.value)}
-        ></input>
-        <input type="submit" value="Submit"></input>
+        <div>
+          <input
+            name="numInput"
+            type="number"
+            min="0"
+            max="126"
+            value={formState}
+            onChange={(e) => setFormState(e.target.value)}
+          ></input>
+          <input type="submit" value="Submit"></input>
+        </div>
       </form>
-      {music_blocks}
+      <div className="grid-div">{music_blocks}</div>
     </div>
   );
 }
