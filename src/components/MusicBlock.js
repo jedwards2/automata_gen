@@ -1,6 +1,14 @@
 import { useEffect } from "react";
 
-function MusicBlock({ active, setBlock, idx, playNote, currentSelected }) {
+function MusicBlock({
+  active,
+  setBlock,
+  index,
+  idx,
+  playNote,
+  currentSelected,
+  setIndex,
+}) {
   useEffect(() => {
     if (active && currentSelected) {
       playNote("C1");
@@ -13,7 +21,7 @@ function MusicBlock({ active, setBlock, idx, playNote, currentSelected }) {
       className={`music-block ${active ? "on" : "off"} ${
         currentSelected ? "selected" : ""
       }`}
-      onClick={() => setBlock(idx)}
+      onClick={() => setBlock(idx, index, setIndex)}
     ></div>
   );
 }

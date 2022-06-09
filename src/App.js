@@ -7,8 +7,14 @@ function App() {
   const [count, setCount] = useState(0);
   const [running, setRunning] = useState(false);
   const [currentRule, setCurrentRule] = useState(122);
-  const [currentIndex, setCurrentIndex] = useState([
-    1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+  const [firstIndex, setFirstIndex] = useState([
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  ]);
+  const [secondIndex, setSecondIndex] = useState([
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  ]);
+  const [thirdIndex, setThirdIndex] = useState([
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
   ]);
   const [currentSelected, setCurrentSelected] = useState([
     true,
@@ -37,12 +43,44 @@ function App() {
     synth.triggerAttackRelease(note, "8n", time);
   }
 
-  const music_blocks = currentIndex.map((index, idx) => {
+  const first_row = firstIndex.map((index, idx) => {
     return (
       <MusicBlock
         key={idx}
         active={index}
         setBlock={setBlock}
+        setIndex={setFirstIndex}
+        index={firstIndex}
+        idx={idx}
+        playNote={playNote}
+        currentSelected={currentSelected[idx]}
+      />
+    );
+  });
+
+  const second_row = secondIndex.map((index, idx) => {
+    return (
+      <MusicBlock
+        key={idx}
+        active={index}
+        setBlock={setBlock}
+        index={secondIndex}
+        setIndex={setSecondIndex}
+        idx={idx}
+        playNote={playNote}
+        currentSelected={currentSelected[idx]}
+      />
+    );
+  });
+
+  const third_row = thirdIndex.map((index, idx) => {
+    return (
+      <MusicBlock
+        key={idx}
+        active={index}
+        setBlock={setBlock}
+        index={thirdIndex}
+        setIndex={setThirdIndex}
         idx={idx}
         playNote={playNote}
         currentSelected={currentSelected[idx]}
@@ -72,8 +110,10 @@ function App() {
         newState[index] = !prevState[index];
         newState[nextIndex] = !prevState[nextIndex];
 
-        if (index === currentIndex.length - 1) {
-          compute_new_row();
+        if (index === firstIndex.length - 1) {
+          compute_new_row(firstIndex);
+          compute_new_row(secondIndex);
+          compute_new_row(thirdIndex);
         }
 
         return newState;
@@ -87,21 +127,21 @@ function App() {
     };
   });
 
-  function setBlock(key) {
+  function setBlock(key, index, setIndex) {
     let newIndex = [];
-    for (let i = 0; i < currentIndex.length; i++) {
+    for (let i = 0; i < index.length; i++) {
       if (i === key) {
-        if (currentIndex[i] === 0) {
+        if (index[i] === 0) {
           newIndex[i] = 1;
         } else {
           newIndex[i] = 0;
         }
       } else {
-        newIndex[i] = currentIndex[i];
+        newIndex[i] = index[i];
       }
     }
 
-    setCurrentIndex(newIndex);
+    setIndex(newIndex);
   }
 
   function int_to_binary(inputted_int) {
@@ -123,7 +163,7 @@ function App() {
     //add remaining 0's onto original binary_list
   }
 
-  function compute_new_row() {
+  function compute_new_row(index) {
     let a1 = 0;
     let a2 = 0;
     let a3 = 0;
@@ -131,19 +171,19 @@ function App() {
     let new_index = [];
     let binary_list = int_to_binary(currentRule);
 
-    for (let i = 0; i < currentIndex.length; i++) {
-      if (currentIndex[i - 1] === undefined) {
+    for (let i = 0; i < index.length; i++) {
+      if (index[i - 1] === undefined) {
         a1 = 0;
       } else {
-        a1 = currentIndex[i - 1];
+        a1 = index[i - 1];
       }
 
-      a2 = currentIndex[i];
+      a2 = index[i];
 
-      if (currentIndex[i + 1] === undefined) {
+      if (index[i + 1] === undefined) {
         a3 = 0;
       } else {
-        a3 = currentIndex[i + 1];
+        a3 = index[i + 1];
       }
 
       a_full = a1.toString() + a2.toString() + a3.toString();
@@ -180,12 +220,15 @@ function App() {
         //runs test determining future and places it in new array
       }
     }
-    setCurrentIndex(new_index);
+    if (firstIndex === index) {
+      setFirstIndex(new_index);
+    } else if (secondIndex === index) {
+      setSecondIndex(new_index);
+    } else if (thirdIndex === index) {
+      setThirdIndex(new_index);
+    }
 
     //replaces current index with contents of new index
-
-    console.log(currentIndex);
-    //posts and outputs the new row
   }
 
   function handleSubmit(e) {
@@ -221,7 +264,11 @@ function App() {
           <input type="submit" value="Submit"></input>
         </div>
       </form>
-      <div className="grid-div">{music_blocks}</div>
+      <div>
+        <div className="grid-div">{first_row}</div>
+        <div className="grid-div">{second_row}</div>
+        <div className="grid-div">{third_row}</div>
+      </div>
     </div>
   );
 }
