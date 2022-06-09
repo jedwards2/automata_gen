@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/automata_gen/static/css/main.93ff8d64.css",
+    "main.js": "/automata_gen/static/js/main.fc2bd355.js",
+    "index.html": "/automata_gen/index.html",
+    "main.93ff8d64.css.map": "/automata_gen/static/css/main.93ff8d64.css.map",
+    "main.fc2bd355.js.map": "/automata_gen/static/js/main.fc2bd355.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.93ff8d64.css",
+    "static/js/main.fc2bd355.js"
+  ]
+}
