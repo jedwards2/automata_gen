@@ -4,10 +4,10 @@ import { useState, useEffect } from "react";
 import MusicBlock from "./components/MusicBlock";
 
 function App() {
-  Tone.start();
   const [count, setCount] = useState(0);
   const [running, setRunning] = useState(false);
   const [currentRule, setCurrentRule] = useState(30);
+
   const [firstIndex, setFirstIndex] = useState([
     0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   ]);
@@ -17,6 +17,7 @@ function App() {
   const [thirdIndex, setThirdIndex] = useState([
     0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
   ]);
+
   const [currentSelected, setCurrentSelected] = useState([
     true,
     false,
@@ -42,8 +43,8 @@ function App() {
   const synth2 = new Tone.PolySynth(Tone.MembraneSynth).toDestination();
   const synth3 = new Tone.PolySynth(Tone.MembraneSynth).toDestination();
 
-  function playNote(instrument, note) {
-    instrument.triggerAttackRelease(note, "32n");
+  function playNote(instrument, note, time) {
+    instrument.triggerAttackRelease(note, "8n", time);
   }
 
   const first_row = firstIndex.map((index, idx) => {
@@ -127,7 +128,7 @@ function App() {
 
         return newState;
       });
-    }, "16n");
+    }, "8n");
 
     loop.start(0);
 
