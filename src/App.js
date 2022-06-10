@@ -2,16 +2,14 @@ import "./App.css";
 import * as Tone from "tone";
 import { useState, useEffect } from "react";
 import MusicBlock from "./components/MusicBlock";
-import kick from "./samples/kick.wav";
-import bass from "./samples/bass.wav";
-import snare from "./samples/snare.wav";
 
 function App() {
+  Tone.start();
   const [count, setCount] = useState(0);
   const [running, setRunning] = useState(false);
-  const [currentRule, setCurrentRule] = useState(122);
+  const [currentRule, setCurrentRule] = useState(30);
   const [firstIndex, setFirstIndex] = useState([
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   ]);
   const [secondIndex, setSecondIndex] = useState([
     0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -38,18 +36,14 @@ function App() {
     false,
   ]);
 
-  Tone.Transport.bpm.value = 340;
-
   const [formState, setFormState] = useState(0);
 
-  const kickSampler = new Tone.Player(kick).toDestination();
-  const bassSampler = new Tone.Player(bass).toDestination();
-  const snareSampler = new Tone.Player(snare).toDestination();
+  const synth1 = new Tone.PolySynth(Tone.MembraneSynth).toDestination();
+  const synth2 = new Tone.PolySynth(Tone.MembraneSynth).toDestination();
+  const synth3 = new Tone.PolySynth(Tone.MembraneSynth).toDestination();
 
-  function playNote(instrument) {
-    Tone.loaded().then(() => {
-      instrument.start();
-    });
+  function playNote(instrument, note) {
+    instrument.triggerAttackRelease(note, "32n");
   }
 
   const first_row = firstIndex.map((index, idx) => {
@@ -63,7 +57,8 @@ function App() {
         idx={idx}
         playNote={playNote}
         currentSelected={currentSelected[idx]}
-        instrument={snareSampler}
+        instrument={synth1}
+        note={"C4"}
       />
     );
   });
@@ -79,7 +74,8 @@ function App() {
         idx={idx}
         playNote={playNote}
         currentSelected={currentSelected[idx]}
-        instrument={kickSampler}
+        instrument={synth2}
+        note={"G3"}
       />
     );
   });
@@ -95,7 +91,8 @@ function App() {
         idx={idx}
         playNote={playNote}
         currentSelected={currentSelected[idx]}
-        instrument={bassSampler}
+        instrument={synth3}
+        note={"C3"}
       />
     );
   });
@@ -130,7 +127,7 @@ function App() {
 
         return newState;
       });
-    }, "4n");
+    }, "16n");
 
     loop.start(0);
 

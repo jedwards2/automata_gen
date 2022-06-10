@@ -9,10 +9,11 @@ function MusicBlock({
   currentSelected,
   setIndex,
   instrument,
+  note,
 }) {
   useEffect(() => {
     if (active && currentSelected) {
-      playNote(instrument);
+      playNote(instrument, note);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, currentSelected]);
