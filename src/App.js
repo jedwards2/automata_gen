@@ -2,6 +2,9 @@ import "./App.css";
 import * as Tone from "tone";
 import { useState, useEffect } from "react";
 import MusicBlock from "./components/MusicBlock";
+import kick from "./samples/kick.wav";
+import bass from "./samples/bass.wav";
+import snare from "./samples/snare.wav";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -35,12 +38,18 @@ function App() {
     false,
   ]);
 
+  Tone.Transport.bpm.value = 340;
+
   const [formState, setFormState] = useState(0);
 
-  const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+  const kickSampler = new Tone.Player(kick).toDestination();
+  const bassSampler = new Tone.Player(bass).toDestination();
+  const snareSampler = new Tone.Player(snare).toDestination();
 
-  function playNote(note, time) {
-    synth.triggerAttackRelease(note, "8n", time);
+  function playNote(instrument) {
+    Tone.loaded().then(() => {
+      instrument.start();
+    });
   }
 
   const first_row = firstIndex.map((index, idx) => {
@@ -54,6 +63,7 @@ function App() {
         idx={idx}
         playNote={playNote}
         currentSelected={currentSelected[idx]}
+        instrument={snareSampler}
       />
     );
   });
@@ -69,6 +79,7 @@ function App() {
         idx={idx}
         playNote={playNote}
         currentSelected={currentSelected[idx]}
+        instrument={kickSampler}
       />
     );
   });
@@ -84,6 +95,7 @@ function App() {
         idx={idx}
         playNote={playNote}
         currentSelected={currentSelected[idx]}
+        instrument={bassSampler}
       />
     );
   });
