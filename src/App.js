@@ -17,6 +17,21 @@ function App() {
   const [thirdIndex, setThirdIndex] = useState([
     0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
   ]);
+  const [fourthIndex, setFourthIndex] = useState([
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  ]);
+  const [fifthIndex, setFifthIndex] = useState([
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+  ]);
+  const [sixthIndex, setSixthIndex] = useState([
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  ]);
+  const [seventhIndex, setSeventhIndex] = useState([
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+  ]);
+  const [eighthIndex, setEighthIndex] = useState([
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  ]);
 
   const [currentSelected, setCurrentSelected] = useState([
     true,
@@ -39,14 +54,6 @@ function App() {
 
   const [formState, setFormState] = useState(0);
 
-  const synth1 = new Tone.PolySynth(Tone.MembraneSynth).toDestination();
-  const synth2 = new Tone.PolySynth(Tone.MembraneSynth).toDestination();
-  const synth3 = new Tone.PolySynth(Tone.MembraneSynth).toDestination();
-
-  function playNote(instrument, note, time) {
-    instrument.triggerAttackRelease(note, "8n", time);
-  }
-
   const first_row = firstIndex.map((index, idx) => {
     return (
       <MusicBlock
@@ -56,10 +63,8 @@ function App() {
         setIndex={setFirstIndex}
         index={firstIndex}
         idx={idx}
-        playNote={playNote}
         currentSelected={currentSelected[idx]}
-        instrument={synth1}
-        note={"C4"}
+        note={"B2"}
       />
     );
   });
@@ -73,10 +78,8 @@ function App() {
         index={secondIndex}
         setIndex={setSecondIndex}
         idx={idx}
-        playNote={playNote}
         currentSelected={currentSelected[idx]}
-        instrument={synth2}
-        note={"G3"}
+        note={"C3"}
       />
     );
   });
@@ -90,10 +93,83 @@ function App() {
         index={thirdIndex}
         setIndex={setThirdIndex}
         idx={idx}
-        playNote={playNote}
         currentSelected={currentSelected[idx]}
-        instrument={synth3}
-        note={"C3"}
+        note={"D3"}
+      />
+    );
+  });
+
+  const fourth_row = fourthIndex.map((index, idx) => {
+    return (
+      <MusicBlock
+        key={idx}
+        active={index}
+        setBlock={setBlock}
+        index={fourthIndex}
+        setIndex={setFourthIndex}
+        idx={idx}
+        currentSelected={currentSelected[idx]}
+        note={"E3"}
+      />
+    );
+  });
+
+  const fifth_row = fifthIndex.map((index, idx) => {
+    return (
+      <MusicBlock
+        key={idx}
+        active={index}
+        setBlock={setBlock}
+        index={fifthIndex}
+        setIndex={setFifthIndex}
+        idx={idx}
+        currentSelected={currentSelected[idx]}
+        note={"F3"}
+      />
+    );
+  });
+
+  const sixth_row = sixthIndex.map((index, idx) => {
+    return (
+      <MusicBlock
+        key={idx}
+        active={index}
+        setBlock={setBlock}
+        index={sixthIndex}
+        setIndex={setSixthIndex}
+        idx={idx}
+        currentSelected={currentSelected[idx]}
+        note={"G3"}
+      />
+    );
+  });
+
+  const seventh_row = seventhIndex.map((index, idx) => {
+    return (
+      <MusicBlock
+        key={idx}
+        active={index}
+        setBlock={setBlock}
+        index={seventhIndex}
+        setIndex={setSeventhIndex}
+        idx={idx}
+        currentSelected={currentSelected[idx]}
+        note={"A3"}
+      />
+    );
+  });
+
+  const eighth_row = eighthIndex.map((index, idx) => {
+    return (
+      <MusicBlock
+        key={idx}
+        active={index}
+        setBlock={setBlock}
+        index={eighthIndex}
+        setIndex={setEighthIndex}
+        idx={idx}
+        currentSelected={currentSelected[idx]}
+        note={"B3"}
       />
     );
   });
@@ -124,6 +200,11 @@ function App() {
           compute_new_row(firstIndex);
           compute_new_row(secondIndex);
           compute_new_row(thirdIndex);
+          compute_new_row(fourthIndex);
+          compute_new_row(fifthIndex);
+          compute_new_row(sixthIndex);
+          compute_new_row(seventhIndex);
+          compute_new_row(eighthIndex);
         }
 
         return newState;
@@ -236,6 +317,16 @@ function App() {
       setSecondIndex(new_index);
     } else if (thirdIndex === index) {
       setThirdIndex(new_index);
+    } else if (fourthIndex === index) {
+      setFourthIndex(new_index);
+    } else if (fifthIndex === index) {
+      setFifthIndex(new_index);
+    } else if (sixthIndex === index) {
+      setSixthIndex(new_index);
+    } else if (seventhIndex === index) {
+      setSeventhIndex(new_index);
+    } else if (eighthIndex === index) {
+      setEighthIndex(new_index);
     }
 
     //replaces current index with contents of new index
@@ -278,6 +369,11 @@ function App() {
         <div className="grid-div">{first_row}</div>
         <div className="grid-div">{second_row}</div>
         <div className="grid-div">{third_row}</div>
+        <div className="grid-div">{fourth_row}</div>
+        <div className="grid-div">{fifth_row}</div>
+        <div className="grid-div">{sixth_row}</div>
+        <div className="grid-div">{seventh_row}</div>
+        <div className="grid-div">{eighth_row}</div>
       </div>
     </div>
   );

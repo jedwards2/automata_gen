@@ -1,20 +1,24 @@
 import { useEffect } from "react";
+import * as Tone from "tone";
 
 function MusicBlock({
   active,
   setBlock,
   index,
   idx,
-  playNote,
   currentSelected,
   setIndex,
-  instrument,
   note,
 }) {
   useEffect(() => {
+    const synth = new Tone.PolySynth(Tone.MembraneSynth).toDestination();
     if (active && currentSelected) {
-      playNote(instrument, note);
+      synth.triggerAttackRelease(note, "16n");
     }
+    return () => {
+      synth.context._timeouts.cancel(0);
+      synth.dispose();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, currentSelected]);
 
