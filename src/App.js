@@ -9,10 +9,10 @@ function App() {
   const [currentRule, setCurrentRule] = useState(30);
 
   const [firstIndex, setFirstIndex] = useState([
-    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
   ]);
   const [secondIndex, setSecondIndex] = useState([
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
   ]);
   const [thirdIndex, setThirdIndex] = useState([
     0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,

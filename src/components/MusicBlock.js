@@ -13,6 +13,7 @@ function MusicBlock({
   useEffect(() => {
     const synth = new Tone.PolySynth(Tone.MembraneSynth).toDestination();
     if (active && currentSelected) {
+      Tone.context.resume();
       synth.triggerAttackRelease(note, "16n");
     }
     return () => {
