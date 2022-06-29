@@ -175,6 +175,7 @@ function App() {
   });
 
   function switchRunning() {
+    Tone.start();
     if (!running) {
       Tone.Transport.start();
     } else {
