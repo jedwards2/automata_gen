@@ -193,13 +193,8 @@ function App() {
     setRunning((prevState) => !prevState);
   }
 
-  function playNote(note, time) {
-    const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+  function playNote(note, synth, time) {
     synth.triggerAttackRelease(note, "8n", time);
-
-    return () => {
-      synth.dispose();
-    };
   }
 
   useEffect(() => {

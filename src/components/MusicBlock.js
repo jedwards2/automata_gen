@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import * as Tone from "tone";
 
 function MusicBlock({
   active,
@@ -10,13 +11,17 @@ function MusicBlock({
   note,
   playNote,
 }) {
+  const [synth, setSynth] = useState();
   useEffect(() => {
-    if (active && currentSelected) {
-      playNote(note);
+    if (active && currentSelected && synth) {
+      playNote(note, synth);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, currentSelected]);
 
+  useEffect(() => {
+    setSynth(new Tone.PolySynth(Tone.Synth).toDestination());
+  }, []);
   return (
     <div
       className={`music-block ${active ? "on" : "off"} ${
