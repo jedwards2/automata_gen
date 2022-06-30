@@ -349,23 +349,30 @@ function App() {
 
   return (
     <div className="App">
-      <button onClick={switchRunning} className="start-stop-button">
-        {running ? "Stop" : "Start"}
-      </button>
-      <form onSubmit={handleSubmit} className="form-div">
-        <label htmlFor="numInput">Ruleset - Current: {currentRule}</label>
-        <div>
-          <input
-            name="numInput"
-            type="number"
-            min="0"
-            max="126"
-            value={formState}
-            onChange={(e) => setFormState(e.target.value)}
-          ></input>
-          <input type="submit" value="Submit"></input>
-        </div>
-      </form>
+      <header>
+        <h1>Elementary Cellular Automata Rhythm Generator</h1>
+      </header>
+
+      <div className="control-panel">
+        <form onSubmit={handleSubmit} className="form-div">
+          <label htmlFor="numInput">Ruleset - Current: {currentRule}</label>
+          <div>
+            <input
+              name="numInput"
+              type="number"
+              min="0"
+              max="126"
+              value={formState}
+              onChange={(e) => setFormState(e.target.value)}
+            ></input>
+            <input type="submit" value="Submit"></input>
+          </div>
+        </form>
+        <button onClick={switchRunning} className="start-stop-button">
+          {running ? "Stop" : "Start"}
+        </button>
+      </div>
+
       <div>
         <div className="grid-div">{first_row}</div>
         <div className="grid-div">{second_row}</div>
@@ -375,6 +382,10 @@ function App() {
         <div className="grid-div">{sixth_row}</div>
         <div className="grid-div">{seventh_row}</div>
         <div className="grid-div">{eighth_row}</div>
+      </div>
+      <div className="footer">
+        <p>created by</p>
+        <a href="https://github.com/jedwards2">jedwards2</a>
       </div>
     </div>
   );

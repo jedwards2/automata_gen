@@ -1,5 +1,15 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
 .App {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: darkslategray;
+  height: 100%;
 }
 
 .music-block {
@@ -25,15 +35,15 @@
   background-color: lightgray;
   border-radius: 10px;
   border: 2px solid black;
-  padding: 10px;
+  padding: 5px;
+  color: black;
 }
 
 .start-stop-button {
   background-color: lightgray;
   border-radius: 10px;
   border: 2px solid black;
-  width: 78px;
-  height: 78px;
+  padding: 20px;;
 }
 
 .start-stop-button:hover {
@@ -46,4 +56,26 @@
   padding: 10px;
   border-radius: 10px;
   border: 2px black solid;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  justify-content: right;
+  color: lightgray;
+}
+
+.control-panel {
+  display: flex;
+  flex-direction: row;
+}
+
+.footer {
+  margin: 0;
+  padding: 0;
+}
+
+.footer p {
+  margin-bottom: 0px;
 }
