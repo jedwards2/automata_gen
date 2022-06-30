@@ -65,6 +65,7 @@ function App() {
         idx={idx}
         currentSelected={currentSelected[idx]}
         note={"B2"}
+        playNote={playNote}
       />
     );
   });
@@ -80,6 +81,7 @@ function App() {
         idx={idx}
         currentSelected={currentSelected[idx]}
         note={"C3"}
+        playNote={playNote}
       />
     );
   });
@@ -95,6 +97,7 @@ function App() {
         idx={idx}
         currentSelected={currentSelected[idx]}
         note={"D3"}
+        playNote={playNote}
       />
     );
   });
@@ -110,6 +113,7 @@ function App() {
         idx={idx}
         currentSelected={currentSelected[idx]}
         note={"E3"}
+        playNote={playNote}
       />
     );
   });
@@ -125,6 +129,7 @@ function App() {
         idx={idx}
         currentSelected={currentSelected[idx]}
         note={"F3"}
+        playNote={playNote}
       />
     );
   });
@@ -140,6 +145,7 @@ function App() {
         idx={idx}
         currentSelected={currentSelected[idx]}
         note={"G3"}
+        playNote={playNote}
       />
     );
   });
@@ -155,6 +161,7 @@ function App() {
         idx={idx}
         currentSelected={currentSelected[idx]}
         note={"A3"}
+        playNote={playNote}
       />
     );
   });
@@ -170,6 +177,7 @@ function App() {
         idx={idx}
         currentSelected={currentSelected[idx]}
         note={"B3"}
+        playNote={playNote}
       />
     );
   });
@@ -183,6 +191,15 @@ function App() {
     }
 
     setRunning((prevState) => !prevState);
+  }
+
+  function playNote(note, time) {
+    const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+    synth.triggerAttackRelease(note, "8n", time);
+
+    return () => {
+      synth.dispose();
+    };
   }
 
   useEffect(() => {
