@@ -61,7 +61,6 @@ html, body, #root {
 header {
   display: flex;
   flex-direction: row;
-  margin-bottom: 10px;
   justify-content: right;
   color: lightgray;
 }
@@ -74,8 +73,12 @@ header {
 .footer {
   margin: 0;
   padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -10px;
 }
 
 .footer p {
-  margin-bottom: 0px;
+  margin-right: 5px;
 }

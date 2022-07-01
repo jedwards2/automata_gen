@@ -396,7 +396,7 @@ function App() {
         <div className="grid-div">{eighth_row}</div>
       </div>
       <div className="footer">
-        <p>created by</p>
+        <p>created by: </p>
         <a href="https://github.com/jedwards2">jedwards2</a>
       </div>
     </div>
