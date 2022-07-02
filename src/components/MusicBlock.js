@@ -11,7 +11,11 @@ function MusicBlock({
   setGridState,
   playNote,
 }) {
+  //synth is stored in state and only created once at
+  //start of program to prevent multiple copies created on each re-render
   const [synth, setSynth] = useState();
+
+  //when rendered, check if note should sound
   useEffect(() => {
     if (active && currentSelected && synth) {
       playNote("B2", synth);

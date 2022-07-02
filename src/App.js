@@ -5,12 +5,16 @@ import MusicBlock from "./components/MusicBlock";
 import initialBlockState from "./blockIndex";
 
 function App() {
+  //for checking that program loops properly
   const [count, setCount] = useState(0);
+  //state for turning on/off
   const [running, setRunning] = useState(false);
+  //state for setting automata rule
   const [currentRule, setCurrentRule] = useState(30);
 
+  //state for entire grid
   const [gridState, setGridState] = useState(initialBlockState);
-
+  //state for currently selected column on grid
   const [currentSelected, setCurrentSelected] = useState([
     true,
     false,
@@ -29,9 +33,10 @@ function App() {
     false,
     false,
   ]);
-
+  //set inital state of form
   const [formState, setFormState] = useState(0);
 
+  //creates an array of rows
   const rows = gridState.map((index, idx1) => {
     let row = index.map((item, idx2) => {
       return (
@@ -55,6 +60,7 @@ function App() {
     );
   });
 
+  //turns clock on and off
   function switchRunning() {
     Tone.start();
     if (!running) {
@@ -65,11 +71,11 @@ function App() {
 
     setRunning((prevState) => !prevState);
   }
-
+  //universal playnote function to be passed into all blocks
   function playNote(note, synth, time) {
     synth.triggerAttackRelease(note, "8n", time);
   }
-
+  //sets the loop and updates selected state, disposes loop after each render
   useEffect(() => {
     const loop = new Tone.Loop((time) => {
       setCount((prevCount) => prevCount + 1);
@@ -97,6 +103,8 @@ function App() {
     };
   });
 
+  //switches block between t/f and updates entire grid state
+  //scientists unaware why second version doesn't work
   function switchBlock(row, column, gridState, setGridState) {
     let newState = [...gridState];
     newState[row][column] = !newState[row][column];
@@ -108,6 +116,7 @@ function App() {
     // });
   }
 
+  //takes in an integer and returns binary form
   function int_to_binary(inputted_int) {
     let new_binary_list = [];
     while (inputted_int > 0) {
@@ -127,6 +136,7 @@ function App() {
     //add remaining 0's onto original binary_list
   }
 
+  //runs over every row of the table and applies the current rule
   function compute_new_row(row, idx) {
     let a1 = 0;
     let a2 = 0;
@@ -204,6 +214,7 @@ function App() {
     //replaces current index with contents of new index
   }
 
+  //form submit
   function handleSubmit(e) {
     e.preventDefault();
     let newRule = formState;
