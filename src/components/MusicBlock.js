@@ -2,19 +2,19 @@ import { useEffect, useState } from "react";
 import * as Tone from "tone";
 
 function MusicBlock({
+  row,
+  column,
   active,
-  setBlock,
-  index,
-  idx,
+  gridState,
   currentSelected,
-  setIndex,
-  note,
+  switchBlock,
+  setGridState,
   playNote,
 }) {
   const [synth, setSynth] = useState();
   useEffect(() => {
     if (active && currentSelected && synth) {
-      playNote(note, synth);
+      playNote("B2", synth);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, currentSelected]);
@@ -22,12 +22,13 @@ function MusicBlock({
   useEffect(() => {
     setSynth(new Tone.PolySynth(Tone.Synth).toDestination());
   }, []);
+
   return (
     <div
       className={`music-block ${active ? "on" : "off"} ${
         currentSelected ? "selected" : ""
       }`}
-      onClick={() => setBlock(idx, index, setIndex)}
+      onClick={() => switchBlock(row, column, gridState, setGridState)}
     ></div>
   );
 }

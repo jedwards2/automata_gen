@@ -2,36 +2,14 @@ import "./App.css";
 import * as Tone from "tone";
 import { useState, useEffect } from "react";
 import MusicBlock from "./components/MusicBlock";
+import initialBlockState from "./blockIndex";
 
 function App() {
   const [count, setCount] = useState(0);
   const [running, setRunning] = useState(false);
   const [currentRule, setCurrentRule] = useState(30);
 
-  const [firstIndex, setFirstIndex] = useState([
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-  ]);
-  const [secondIndex, setSecondIndex] = useState([
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-  ]);
-  const [thirdIndex, setThirdIndex] = useState([
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-  ]);
-  const [fourthIndex, setFourthIndex] = useState([
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  ]);
-  const [fifthIndex, setFifthIndex] = useState([
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  ]);
-  const [sixthIndex, setSixthIndex] = useState([
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-  ]);
-  const [seventhIndex, setSeventhIndex] = useState([
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-  ]);
-  const [eighthIndex, setEighthIndex] = useState([
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-  ]);
+  const [gridState, setGridState] = useState(initialBlockState);
 
   const [currentSelected, setCurrentSelected] = useState([
     true,
@@ -54,131 +32,26 @@ function App() {
 
   const [formState, setFormState] = useState(0);
 
-  const first_row = firstIndex.map((index, idx) => {
+  const rows = gridState.map((index, idx1) => {
+    let row = index.map((item, idx2) => {
+      return (
+        <MusicBlock
+          key={`${idx1}-${idx2}`}
+          row={idx1}
+          column={idx2}
+          active={item}
+          gridState={gridState}
+          currentSelected={currentSelected[idx2]}
+          switchBlock={switchBlock}
+          setGridState={setGridState}
+          playNote={playNote}
+        />
+      );
+    });
     return (
-      <MusicBlock
-        key={idx}
-        active={index}
-        setBlock={setBlock}
-        setIndex={setFirstIndex}
-        index={firstIndex}
-        idx={idx}
-        currentSelected={currentSelected[idx]}
-        note={"B2"}
-        playNote={playNote}
-      />
-    );
-  });
-
-  const second_row = secondIndex.map((index, idx) => {
-    return (
-      <MusicBlock
-        key={idx}
-        active={index}
-        setBlock={setBlock}
-        index={secondIndex}
-        setIndex={setSecondIndex}
-        idx={idx}
-        currentSelected={currentSelected[idx]}
-        note={"C3"}
-        playNote={playNote}
-      />
-    );
-  });
-
-  const third_row = thirdIndex.map((index, idx) => {
-    return (
-      <MusicBlock
-        key={idx}
-        active={index}
-        setBlock={setBlock}
-        index={thirdIndex}
-        setIndex={setThirdIndex}
-        idx={idx}
-        currentSelected={currentSelected[idx]}
-        note={"D3"}
-        playNote={playNote}
-      />
-    );
-  });
-
-  const fourth_row = fourthIndex.map((index, idx) => {
-    return (
-      <MusicBlock
-        key={idx}
-        active={index}
-        setBlock={setBlock}
-        index={fourthIndex}
-        setIndex={setFourthIndex}
-        idx={idx}
-        currentSelected={currentSelected[idx]}
-        note={"E3"}
-        playNote={playNote}
-      />
-    );
-  });
-
-  const fifth_row = fifthIndex.map((index, idx) => {
-    return (
-      <MusicBlock
-        key={idx}
-        active={index}
-        setBlock={setBlock}
-        index={fifthIndex}
-        setIndex={setFifthIndex}
-        idx={idx}
-        currentSelected={currentSelected[idx]}
-        note={"F3"}
-        playNote={playNote}
-      />
-    );
-  });
-
-  const sixth_row = sixthIndex.map((index, idx) => {
-    return (
-      <MusicBlock
-        key={idx}
-        active={index}
-        setBlock={setBlock}
-        index={sixthIndex}
-        setIndex={setSixthIndex}
-        idx={idx}
-        currentSelected={currentSelected[idx]}
-        note={"G3"}
-        playNote={playNote}
-      />
-    );
-  });
-
-  const seventh_row = seventhIndex.map((index, idx) => {
-    return (
-      <MusicBlock
-        key={idx}
-        active={index}
-        setBlock={setBlock}
-        index={seventhIndex}
-        setIndex={setSeventhIndex}
-        idx={idx}
-        currentSelected={currentSelected[idx]}
-        note={"A3"}
-        playNote={playNote}
-      />
-    );
-  });
-
-  const eighth_row = eighthIndex.map((index, idx) => {
-    return (
-      <MusicBlock
-        key={idx}
-        active={index}
-        setBlock={setBlock}
-        index={eighthIndex}
-        setIndex={setEighthIndex}
-        idx={idx}
-        currentSelected={currentSelected[idx]}
-        note={"B3"}
-        playNote={playNote}
-      />
+      <div key={idx1} className="grid-div">
+        {row}
+      </div>
     );
   });
 
@@ -209,15 +82,8 @@ function App() {
         newState[index] = !prevState[index];
         newState[nextIndex] = !prevState[nextIndex];
 
-        if (index === firstIndex.length - 1) {
-          compute_new_row(firstIndex);
-          compute_new_row(secondIndex);
-          compute_new_row(thirdIndex);
-          compute_new_row(fourthIndex);
-          compute_new_row(fifthIndex);
-          compute_new_row(sixthIndex);
-          compute_new_row(seventhIndex);
-          compute_new_row(eighthIndex);
+        if (index === gridState[0].length - 1) {
+          gridState.forEach((row, idx) => compute_new_row(row, idx));
         }
 
         return newState;
@@ -231,21 +97,15 @@ function App() {
     };
   });
 
-  function setBlock(key, index, setIndex) {
-    let newIndex = [];
-    for (let i = 0; i < index.length; i++) {
-      if (i === key) {
-        if (index[i] === 0) {
-          newIndex[i] = 1;
-        } else {
-          newIndex[i] = 0;
-        }
-      } else {
-        newIndex[i] = index[i];
-      }
-    }
-
-    setIndex(newIndex);
+  function switchBlock(row, column, gridState, setGridState) {
+    let newState = [...gridState];
+    newState[row][column] = !newState[row][column];
+    setGridState(newState);
+    // setGridState((prevState) => {
+    //   let newState = [...prevState];
+    //   newState[row][column] = !newState[row][column];
+    //   return newState;
+    // });
   }
 
   function int_to_binary(inputted_int) {
@@ -267,7 +127,7 @@ function App() {
     //add remaining 0's onto original binary_list
   }
 
-  function compute_new_row(index) {
+  function compute_new_row(row, idx) {
     let a1 = 0;
     let a2 = 0;
     let a3 = 0;
@@ -275,23 +135,34 @@ function App() {
     let new_index = [];
     let binary_list = int_to_binary(currentRule);
 
-    for (let i = 0; i < index.length; i++) {
-      if (index[i - 1] === undefined) {
+    for (let i = 0; i < row.length; i++) {
+      if (row[i - 1] === undefined) {
         a1 = 0;
       } else {
-        a1 = index[i - 1];
+        if (row[i - 1]) {
+          a1 = 1;
+        } else {
+          a1 = 0;
+        }
       }
 
-      a2 = index[i];
+      if (row[i]) {
+        a2 = 1;
+      } else {
+        a2 = 0;
+      }
 
-      if (index[i + 1] === undefined) {
+      if (row[i + 1] === undefined) {
         a3 = 0;
       } else {
-        a3 = index[i + 1];
+        if (row[i + 1]) {
+          a3 = 1;
+        } else {
+          a3 = 0;
+        }
       }
 
       a_full = a1.toString() + a2.toString() + a3.toString();
-
       //creates groups of 3 (i-1, i, i+1) so that tests determining the future state can be run
 
       switch (a_full) {
@@ -324,24 +195,12 @@ function App() {
         //runs test determining future and places it in new array
       }
     }
-    if (firstIndex === index) {
-      setFirstIndex(new_index);
-    } else if (secondIndex === index) {
-      setSecondIndex(new_index);
-    } else if (thirdIndex === index) {
-      setThirdIndex(new_index);
-    } else if (fourthIndex === index) {
-      setFourthIndex(new_index);
-    } else if (fifthIndex === index) {
-      setFifthIndex(new_index);
-    } else if (sixthIndex === index) {
-      setSixthIndex(new_index);
-    } else if (seventhIndex === index) {
-      setSeventhIndex(new_index);
-    } else if (eighthIndex === index) {
-      setEighthIndex(new_index);
-    }
+    setGridState((prevState) => {
+      let newState = [...prevState];
+      newState[idx] = new_index;
 
+      return newState;
+    });
     //replaces current index with contents of new index
   }
 
@@ -385,16 +244,7 @@ function App() {
         </button>
       </div>
 
-      <div>
-        <div className="grid-div">{first_row}</div>
-        <div className="grid-div">{second_row}</div>
-        <div className="grid-div">{third_row}</div>
-        <div className="grid-div">{fourth_row}</div>
-        <div className="grid-div">{fifth_row}</div>
-        <div className="grid-div">{sixth_row}</div>
-        <div className="grid-div">{seventh_row}</div>
-        <div className="grid-div">{eighth_row}</div>
-      </div>
+      <div>{rows}</div>
       <div className="footer">
         <p>created by: </p>
         <a href="https://github.com/jedwards2">jedwards2</a>
