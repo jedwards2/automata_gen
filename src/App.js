@@ -104,7 +104,7 @@ function App() {
   });
 
   //switches block between t/f and updates entire grid state
-  //scientists unaware why second version doesn't work
+  //scientists may never know why second version doesn't work
   function switchBlock(row, column, gridState, setGridState) {
     let newState = [...gridState];
     newState[row][column] = !newState[row][column];
@@ -201,7 +201,7 @@ function App() {
           new_index[i] = binary_list[7];
           break;
         default:
-          console.log("something has gone wrong");
+          console.log("error computing binary index");
         //runs test determining future and places it in new array
       }
     }
