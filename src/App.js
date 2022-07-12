@@ -75,7 +75,7 @@ function App() {
   function playNote(note, synth, time) {
     synth.triggerAttackRelease(note, "8n", time);
   }
-  //sets the loop and updates selected state, disposes loop after each render
+  //sets the loop and updates selected state
   useEffect(() => {
     const loop = new Tone.Loop((time) => {
       setCount((prevCount) => prevCount + 1);
@@ -97,7 +97,7 @@ function App() {
     }, "8n");
 
     loop.start(0);
-
+    //dispose of loop after each render
     return () => {
       loop.dispose();
     };
