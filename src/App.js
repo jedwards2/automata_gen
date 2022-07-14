@@ -11,7 +11,6 @@ function App() {
   const [running, setRunning] = useState(false);
   //state for setting automata rule
   const [currentRule, setCurrentRule] = useState(30);
-
   //state for entire grid
   const [gridState, setGridState] = useState(initialBlockState);
   //state for currently selected column on grid
@@ -75,6 +74,7 @@ function App() {
   function playNote(note, synth, time) {
     synth.triggerAttackRelease(note, "8n", time);
   }
+
   //sets the loop and updates selected state
   useEffect(() => {
     const loop = new Tone.Loop((time) => {
